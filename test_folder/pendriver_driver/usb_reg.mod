@@ -1,2 +1,2 @@
-/home/momin/Workspace/LINNBD/test_rep/test_folder/use_reg/usb_reg.o
+/home/momin/Workspace/LINNBD/test_rep/test_folder/pendriver_driver/usb_reg.o
 

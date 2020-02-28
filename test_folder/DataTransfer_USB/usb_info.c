@@ -2,11 +2,32 @@
 #include<linux/kernel.h>
 #include<linux/usb.h>
 
+static struct usb_device *device;
+
+
+
 
 static int pen_probe(struct usb_interface *interface, const struct usb_device_id *id)
 {
-    printk(KERN_INFO "Pen drive (%04X:%04X) plugged\n", id->idVendor,
+    struct usb_host_interface *iface_desc;
+    struct usb_endpoint_descriptor *endpoint;
+    int i;
+    iface_desc = interface->cur_altsetting;
+
+    printk(KERN_INFO "Pen drive  i/f %d  and (%04X:%04X) plugged\n",iface_desc->desc.bInterfaceNumber, id->idVendor,
                                 id->idProduct);
+    printk(KERN_INFO "ID->bNumEndpoints: %02X\n",iface_desc->desc.bNumEndpoints);
+    printk(KERN_INFO "ID->bInterfaceclass: %02X\n", iface_desc->desc.bInterfaceClass);
+    for(i=0; i < iface_desc->desc.bNumEndpoints; i++)
+    {
+        endpoint = &iface_desc->endpoint[i].desc;
+        printk(KERN_INFO "ED[%d]->bEndpointAddress: 0x%02X\n",i, endpoint->bEndpointAddress);
+        printk(KERN_INFO "ED[%d]->bmAttributes: 0x%02X\n", i, endpoint->bmAttributes);
+        printk(KERN_INFO "ED[%d]->wMaxPacketSize: 0x%04X (%d)\n",i, endpoint->wMaxPacketSize, endpoint-> wMaxPacketSize);
+        
+    }
+       
+   
     if(id->idVendor == 0x058f)
     {
         printk(KERN_INFO "Doel inserted");
@@ -16,6 +37,9 @@ static int pen_probe(struct usb_interface *interface, const struct usb_device_id
     {
         printk(KERN_INFO "Jetflash inserted");
     }
+    device = interface_to_usbdev(interface);
+    
+ 
     
     return 0;
 }
