@@ -1,0 +1,1 @@
+cmd_/home/momin/Workspace/LINNBD/test_rep/test_folder/PcControlWithUsb/pcShutdownUsingUsb.mod := { echo  /home/momin/Workspace/LINNBD/test_rep/test_folder/PcControlWithUsb/pcShutdownUsingUsb.o; echo; } > /home/momin/Workspace/LINNBD/test_rep/test_folder/PcControlWithUsb/pcShutdownUsingUsb.mod
