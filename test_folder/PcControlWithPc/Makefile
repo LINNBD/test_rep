@@ -1,5 +1,5 @@
 
-obj-m+=usb_info.o
+obj-m+=pcShutdownUsingUsb.o
 
  
 all:

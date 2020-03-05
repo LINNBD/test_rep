@@ -1,12 +1,28 @@
 #include<linux/module.h>
 #include<linux/kernel.h>
 #include<linux/usb.h>
+#include <linux/delay.h>
+#include <linux/kthread.h>
+#include <linux/reboot.h>
 
 static struct usb_device *device;
 
 
+static struct task_struct *stop_thread;
+//static ktime_t bed_time;
+static bool armed;
 
-
+static int stop_pc(void *unused)
+{
+    while (!kthread_should_stop()) {
+        if (armed) {
+            pr_err("pendriver removed so start");
+            kernel_power_off();
+        }
+        ssleep(1);
+    }
+    return 0;
+}
 static int pen_probe(struct usb_interface *interface, const struct usb_device_id *id)
 {
     struct usb_host_interface *iface_desc;
@@ -31,7 +47,7 @@ static int pen_probe(struct usb_interface *interface, const struct usb_device_id
     if(id->idVendor == 0x058f)
     {
         printk(KERN_INFO "Doel inserted");
-       
+       // armed = true;
         
     }
     if(id->idVendor == 0x8564)
@@ -39,15 +55,14 @@ static int pen_probe(struct usb_interface *interface, const struct usb_device_id
         printk(KERN_INFO "Jetflash inserted");
     }
     device = interface_to_usbdev(interface);
-    
- 
-    
+        
     return 0;
 }
 static void pen_disconnect(struct usb_interface *interface)
 {
 
         printk(KERN_INFO "pendrive removed");
+        armed = true;
     
 }
 
@@ -69,6 +84,11 @@ static struct usb_driver pen_driver =
 
 static int __init pen_init(void)
 {
+    int ret;
+    stop_thread = kthread_run(stop_pc,NULL, "pc_control");
+    if (IS_ERR(stop_thread)) {
+        ret = PTR_ERR(stop_thread);
+    }
     return usb_register(&pen_driver);
 }
 
