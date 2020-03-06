@@ -1,0 +1,11 @@
+[Unit]
+Description=logout: logout based on pendrive
+After=dkms.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/sbin/modprobe logout
+ExecStart=/usr/local/bin/signout
+
+[Install]
+WantedBy=multi-user.target

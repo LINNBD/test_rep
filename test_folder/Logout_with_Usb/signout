@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+# Copyright <momin.ice16@gmail.com>
+
+import os
+
+class FileError(Exception):
+    pass
+
+def main():
+    if os.path.isdir('/sys/kernel/InsertedPen'):
+        os.system('gnome-session-quit --no-prompt')
+    else:
+        print("not created yet")
+print('File is checking')
+        
+if __name__=='__main__':
+    try:
+        main()
+    
+    except FileError as e:
+        print("error",e)
+        exit (1)
