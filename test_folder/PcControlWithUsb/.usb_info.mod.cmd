@@ -1,1 +1,0 @@
-cmd_/home/momin/Workspace/LINNBD/test_rep/test_folder/usbcntrl/usb_info.mod := { echo  /home/momin/Workspace/LINNBD/test_rep/test_folder/usbcntrl/usb_info.o; echo; } > /home/momin/Workspace/LINNBD/test_rep/test_folder/usbcntrl/usb_info.mod
